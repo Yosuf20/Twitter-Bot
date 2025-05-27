@@ -3,16 +3,40 @@ import requests
 from bs4 import BeautifulSoup
 
 api_key = "kMMzN3rd4yvVspZWh5U57dGcT"
-api_key_secret = "5QSOk9moRBWsJrJTuc4Q7AhcBr01YuihxpIRt72ixTIdb3l1Ft"
-bearer_token = r"AAAAAAAAAAAAAAAAAAAAAB8Y2AEAAAAAlbxPzQrOcOi%2FTBXmDuLognAZ3Ls%3DddNGobFP7aaEvOWaOqySCW4YkNTbK2MCbORDxkimByGnnzoOla"
-access_token = "1927021220941185024-IUgEFwnTBy68Q3Nzqz0Jkb9QVpbLWA"
-access_token_secret = "dk5Nv4cs4DSTDwKh2AgqmKSDcGhjCGa7wVADT01EzK5UK"
+api_key_secret = "FcWuIxoiCc98cNKrsUamQtTGABWJAHJNQsIJvFKHv4qCQVTAtm"
+bearer_token = r"AAAAAAAAAAAAAAAAAAAAAB8Y2AEAAAAAK1NP%2BPHrgWslr34H%2B28rt69uqf4%3Dm9twB1DOK2tmHQONtYGEt1nt5cDABeUp9w6s1GVGTnyGHaZLA7"
+access_token = "1927021220941185024-moKAATpL3gTMVc6x469aRon4QV5XKU"
+access_token_secret = "UIkADpfAP8I2NRl8du47a5b2bKpSl81bmwVfkZFmW1ZKx"
 
 client = tweepy.Client(bearer_token, api_key,api_key_secret, access_token, access_token_secret)
 auth = tweepy.OAuth1UserHandler(api_key, api_key_secret, access_token, access_token_secret)
 api = tweepy.API(auth)
 
-# client.create_tweet(text="1st Tweet Using a Bot")
+client.create_tweet(text="1st Tweet Using a Bot")
 
-# client.like("1927287436767379792")
+client.like("1927287436767379792")
+
 client.retweet("1927287436767379792")
+
+client.create_tweet(in_reply_to_tweet_id=1927059292584054815, text="true he deserves")
+
+for tweet in api.home_timeline():
+    print(tweet.text)
+
+person = client.get_user(username="FabrizioRomano").data.id
+
+for tweet in client.get_users_tweets(person).data:
+    print(tweet.text)
+
+keyword = "Conference League"
+
+client = tweepy.Client(
+    bearer_token="AAAAAAAAAAAAAAAAAAAAAB8Y2AEAAAAAlbxPzQrOcOi%2FTBXmDuLognAZ3Ls%3DddNGobFP7aaEvOWaOqySCW4YkNTbK2MCbORDxkimByGnnzoOla",
+    wait_on_rate_limit=True  # waits automatically when rate-limited
+)
+
+
+response = client.search_recent_tweets(query=keyword, max_results=5)
+
+for tweet in response.data:
+    print(f'-{tweet.text}\n')
