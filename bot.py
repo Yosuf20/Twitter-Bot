@@ -12,6 +12,37 @@ client = tweepy.Client(bearer_token, api_key,api_key_secret, access_token, acces
 auth = tweepy.OAuth1UserHandler(api_key, api_key_secret, access_token, access_token_secret)
 api = tweepy.API(auth)
 
+# Hashtag Generator Function
+def generate_hashtags(topic):
+    """Generate hashtags based on a given topic."""
+    base_hashtags = [
+        "#Trending", "#BreakingNews", "#LatestUpdate", "#TechNews", "#Viral", "#AI", "#Python",
+        "#Innovation", "#Sports", "#Entertainment", "#Finance", "#Crypto", "#Gaming"
+    ]
+    # Scrape Twitter for relevant hashtags (example using BeautifulSoup)
+    url = f"https://twitter.com/search?q={topic}&src=typed_query"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+        
+    hashtags = [tag.text for tag in soup.find_all("a") if "#" in tag.text]
+        
+    suggested_hashtags = list(set(base_hashtags + hashtags))
+    return random.sample(suggested_hashtags, min(5, len(suggested_hashtags)))
+
+
+# Example usage
+topic = "Conference League"
+hashtags = generate_hashtags(topic)
+
+tweet_text = f"Excited for the {topic}! {', '.join(hashtags)}"
+
+client.create_tweet(text=tweet_text)
+
+# tweet_id = "1927287436767379792"
+# client.like(tweet_id)
+# client.retweet(tweet_id)
+
+
 client.create_tweet(text="1st Tweet Using a Bot")
 
 client.like("1927287436767379792")
@@ -40,3 +71,5 @@ response = client.search_recent_tweets(query=keyword, max_results=5)
 
 for tweet in response.data:
     print(f'-{tweet.text}\n')
+
+print("Tweet posted successfully with hashtags!")
